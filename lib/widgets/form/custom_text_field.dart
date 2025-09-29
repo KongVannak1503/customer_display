@@ -1,0 +1,117 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class CustomTextField extends StatefulWidget {
+  final String label;
+  final bool obscureText;
+  final TextInputType keyboardType;
+  final String? Function(String?)? validator;
+  final void Function(String?)? onSaved;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextEditingController? controller;
+  final Color? hoverColor;
+  final Color? placeholderColor;
+  final Color? borderColor;
+  final Color? focusedBorderColor;
+
+  const CustomTextField({
+    super.key,
+    required this.label,
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.validator,
+    this.onSaved,
+    this.inputFormatters,
+    this.controller,
+    this.hoverColor,
+    this.placeholderColor,
+    this.borderColor,
+    this.focusedBorderColor,
+  });
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool _isHovered = false;
+  bool _isFocused = false;
+
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      setState(() {
+        _isFocused = _focusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(4);
+
+    // Define hover background
+    final Color hoverBg =
+        widget.hoverColor ??
+        Theme.of(context).colorScheme.shadow.withAlpha((0.04 * 255).round());
+
+    final borderClr =
+        widget.borderColor ?? Theme.of(context).colorScheme.inversePrimary;
+    final focusedBorderClr =
+        widget.focusedBorderColor ??
+        Theme.of(context).colorScheme.inversePrimary;
+    final placeholderClr = widget.placeholderColor ?? Colors.grey;
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: Container(
+        decoration: BoxDecoration(
+          color: _isHovered ? hoverBg : Colors.transparent,
+          borderRadius: borderRadius,
+        ),
+        child: TextFormField(
+          focusNode: _focusNode,
+          controller: widget.controller,
+          decoration: InputDecoration(
+            labelText: widget.label,
+            floatingLabelStyle: TextStyle(
+              color: _isFocused ? borderClr : Colors.grey,
+            ),
+            hintText: _isFocused ? null : widget.label,
+            hintStyle: TextStyle(color: placeholderClr),
+            border: OutlineInputBorder(borderRadius: borderRadius),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: borderRadius,
+              borderSide: BorderSide(color: borderClr, width: 0.8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: borderRadius,
+              borderSide: BorderSide(color: focusedBorderClr, width: 2),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 20, // increase vertical padding
+              horizontal: 12,
+            ),
+          ),
+          obscureText: widget.obscureText,
+          keyboardType: widget.keyboardType,
+          autocorrect: false,
+          textCapitalization: TextCapitalization.none,
+          validator: widget.validator,
+          onSaved: widget.onSaved,
+          inputFormatters: widget.inputFormatters,
+        ),
+      ),
+    );
+  }
+}
