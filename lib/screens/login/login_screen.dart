@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mylekha_cd_app/screens/routes/route_names.dart';
 import 'package:mylekha_cd_app/widgets/Text/text_base_widget.dart';
 import 'package:mylekha_cd_app/widgets/Text/title_lg_widget.dart';
 import 'package:mylekha_cd_app/widgets/buttons/btn_primary.dart';
 import 'package:mylekha_cd_app/widgets/form/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mylekha_cd_app/widgets/popup/create_new_account_popup_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -47,7 +50,16 @@ class LoginScreen extends StatelessWidget {
                         TitleLgWidget(text: 'Sign in'),
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
-                          child: Icon(Icons.qr_code),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(8),
+                            onTap: () {
+                              GoRouter.of(context).go(RouteNames.LOGIN_QR_PATH);
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.all(4),
+                              child: Icon(Icons.qr_code, size: 28),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -85,13 +97,33 @@ class LoginScreen extends StatelessWidget {
                     ),
 
                     SizedBox(height: 16),
-                    BtnPrimary(text: 'Sign In', onPressed: () {}),
+                    BtnPrimary(
+                      text: 'Sign In',
+                      onPressed: () {
+                        GoRouter.of(
+                          context,
+                        ).go(RouteNames.SELECTED_DEVICE_PATH);
+                      },
+                    ),
                     SizedBox(height: 20),
                     Row(
                       children: [
                         Icon(Icons.person_outline, size: 25),
                         SizedBox(width: 10),
-                        TextBaseWidget(text: 'Create your free account'),
+                        GestureDetector(
+                          onTap: () {
+                            CreateNewAccountPopupWidget.showCreateAccountPopup(
+                              context,
+                            );
+                          },
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors
+                                .click, // 👈 shows pointer/hand cursor
+                            child: TextBaseWidget(
+                              text: 'Create your free account',
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     SizedBox(height: 16),

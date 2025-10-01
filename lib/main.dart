@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mylekha_cd_app/screens/login/login_screen.dart';
+import 'package:mylekha_cd_app/screens/routes/app_routes.dart';
 
 class CustomColors {
   static const Color lightGreen = Color(0xFF06DD90);
@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: AppRoutes.router,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           onPrimaryContainer: Color(0xFF00210F),
           secondary: CustomColors.darkGreen,
           onSecondary: Colors.white,
-          secondaryContainer: Color(0xFF94D8BF),
+          secondaryContainer: Color.fromARGB(255, 232, 248, 234),
           onSecondaryContainer: Color(0xFF002116),
           error: Colors.red.shade700,
           onError: Colors.white,
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
     );
   }
 }

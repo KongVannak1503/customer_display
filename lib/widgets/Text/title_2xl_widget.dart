@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class TitleLgWidget extends StatelessWidget {
+class Title2xlWidget extends StatelessWidget {
   final String text;
-  const TitleLgWidget({super.key, required this.text});
+  const Title2xlWidget({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+      style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
       softWrap: true,
       overflow: TextOverflow.visible,
     );
